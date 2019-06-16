@@ -29,7 +29,6 @@ class ModalForm extends Component {
     setTimeout(() => {
       this.props.close_modal();
     }, 100);
-    //console.warn(this.state.title+"//"+this.state.date+"//"+key)
   }
   _formatDate(value) {
     var mm = value.getMonth() + 1;

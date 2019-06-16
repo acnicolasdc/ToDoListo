@@ -17,6 +17,7 @@ class LoginForm extends Component {
 		this.singUp = this.singUp.bind(this);
 		this.login = this.login.bind(this);
 	}
+
 	async singUp() {
 		try {
 			await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
@@ -33,23 +34,24 @@ class LoginForm extends Component {
 		}
 	}
 	async login() {
-		this.setState({
-			isFetching: true
-		});
-		try {
-			await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
 			this.setState({
-				isFetching: true,
-				response: 'Bienvenido a TodoListo'
+				isFetching: true
 			});
-			setTimeout(() => {
-				this.props.navigation.navigate('General');
-			}, 1500);
-		} catch (error) {
-			this.setState({
-				response: error.toString()
-			});
-		}
+			try {
+				await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
+				this.setState({
+					isFetching: true,
+					response: 'Bienvenido a TodoListo'
+				});
+				setTimeout(() => {
+					this.props.navigation.navigate('General');
+				}, 1500);
+			} catch (error) {
+				this.setState({
+					response: error.toString()
+				});
+				console.warn(error.toString())
+			}
 	}
 	render() {
 		return (
@@ -104,16 +106,5 @@ const Submit = styled.TouchableOpacity`
 	border-radius: 15px;
 	background-color: #f73e81;
 `;
-// const mapStateToProps = state => {
-// 	return{
-// 	  dataTask: state.task,
-// 	}
-//   }
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     create_task: (data) => dispatch(create_task(data)),
-//     close_modal: () => dispatch(close_modal()),
-//   }
-// }
 
-export default connect(null, null)(LoginForm);
+export default (LoginForm);
