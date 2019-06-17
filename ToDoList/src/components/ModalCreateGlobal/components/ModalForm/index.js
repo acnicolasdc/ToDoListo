@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Text from 'ToDoList/src/components/TextGlobal';
-import {DatePickerIOS, DatePickerAndroid} from 'react-native';
+import {DatePickerIOS, DatePickerAndroid,Platform} from 'react-native';
 import {connect} from "react-redux";
 import {create_task} from 'ToDoList/src/actions/taskActions';
 import {close_modal} from 'ToDoList/src/actions/modalActions';
@@ -37,15 +37,30 @@ class ModalForm extends Component {
     var date = yyyy + "-" + mm + "-" + dd;
     return date;
   }
+
+  async openAndroidDatePicker() {
+    try {
+      const {action, year, month, day} = await DatePickerAndroid.open({
+        date: new Date()
+      });
+      this.setDate({action, year, month, day})
+    } catch ({code, message}) {
+      console.warn('Cannot open date picker', message);
+    }
+  }
   render() {
     return (
       <Form>
         <Text text='Crea tu actividad!'/>
         <Input placeholder='Titulo' value={this.state.title}  onChangeText={(title) => this.setState({title})}/>
+        {Platform.OS === 'ios' ?
         <DatePickerIOS
                   date={this.state.date}
                   onDateChange={this.setDate}
           />
+          :
+          this.openAndroidDatePicker
+          }
         <Submit onPress = { ()=>this.createTask() }>
           <Text text='Crear actividad' color='#FFF'></Text>
         </Submit>
