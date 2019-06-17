@@ -43,7 +43,8 @@ class ModalForm extends Component {
       const {action, year, month, day} = await DatePickerAndroid.open({
         date: new Date()
       });
-      this.setDate({action, year, month, day})
+      const date = String(day+"/"+month+"/"+year)
+      this.setDate(date)
     } catch ({code, message}) {
       console.warn('Cannot open date picker', message);
     }
